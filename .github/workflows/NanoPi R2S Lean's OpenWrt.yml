@@ -93,13 +93,14 @@ jobs:
         ../scripts/modify_config.sh
         cat .config
         make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+        #find dl -size -1024c -exec ls -l {} \;
+        #find dl -size -1024c -exec rm -f {} \;
   
     - name: Compile Packages
       id: compile
       run: |
         cd $OPENWRTROOT
+        echo -e $OPENWRTROOT
         echo -e "$(nproc) thread compile"
         make tools/compile -j4 || make tools/compile -j1 V=s
         make toolchain/compile -j4 || make toolchain/compile -j1 V=s
