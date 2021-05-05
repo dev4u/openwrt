@@ -1,9 +1,9 @@
 name: NanoPi R2S Lean's OpenWrt
 on:
-  repository_dispatch:
+  #repository_dispatch:
   workflow_dispatch:
-  schedule:
-    - cron: 0 23 * * *
+  #schedule:
+  #  - cron: 0 23 * * *
   # watch:
   #   types: started
 
@@ -14,14 +14,14 @@ env:
   DIY_SH: scripts/lean.sh
   IPV6MOD_IN_FIRMWARE: true
   KMODS_IN_FIRMWARE: true
-  UPLOAD_WETRANSFER: true
-  UPLOAD_COWTRANSFER: true
+  UPLOAD_WETRANSFER: false
+  UPLOAD_COWTRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
   Build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: github.repository == 'dev4u/openwrt'
     outputs:
       OPENWRTROOT: ${{ steps.update.outputs.OPENWRTROOT }}
@@ -167,7 +167,7 @@ jobs:
         
   Upload:
     needs: [Build]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: github.repository == 'dev4u/openwrt'
     steps:
       - name: Checkout
@@ -255,7 +255,7 @@ jobs:
         uses: dev-drprasad/delete-older-releases@v0.1.0
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         with:
-          keep_latest: 20
+          keep_latest: 5
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
